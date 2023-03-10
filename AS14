@@ -1,0 +1,180 @@
+Q1)What is multithreading in python? Why is it used? Name the module used to handle threads in python.
+*Multithreading is defined as the ability of a processor to execute multiple threads concurrently.
+
+*In a simple, single-core CPU, it is achieved using frequent switching between threads. This is termed as context switching. In context switching, the state of a thread is saved and state of another thread is loaded whenever any interrupt (due to I/O or manually set) takes place. Context switching takes place so frequently that all the threads appear to be running parallelly (this is termed as multitasking).
+
+import threading
+ 
+ 
+def print_cube(num):
+    # function to print cube of given num
+    print("Cube: {}" .format(num * num * num))
+ 
+ 
+def print_square(num):
+    # function to print square of given num
+    print("Square: {}" .format(num * num))
+ 
+ 
+if __name__ =="__main__":
+    # creating thread
+    t1 = threading.Thread(target=print_square, args=(10,))
+    t2 = threading.Thread(target=print_cube, args=(10,))
+ 
+    # starting thread 1
+    t1.start()
+    # starting thread 2
+    t2.start()
+ 
+    # wait until thread 1 is completely executed
+    t1.join()
+    # wait until thread 2 is completely executed
+    t2.join()
+ 
+    # both threads completely executed
+    print("Done!")
+    
+*Python provides one inbuilt module "threading" to provide support for developing threads.
+
+Q2)Why threading module used? Write the use of the following functions
+# activeCount()
+# currentThread()
+# enumerate()
+
+*threading.activeCount() − Returns the number of thread objects that are active.
+
+import time
+from threading import *
+def test(id) :
+    for i in range(id):
+        time.sleep(0.5)
+
+thred = [Thread(target=test , args = (i,)) for i in [10 , 2 , 5]]
+for t in thred:
+    t.start()
+print("The Number of active Threads:",active_count())
+time.sleep(3)
+print("The Number of active Threads:",active_count())
+
+
+*threading.currentThread() − Returns the number of thread objects in the caller's thread control.
+
+import threading
+print("Current Executing Thread:",threading.current_thread().getName())
+
+
+*threading.enumerate() − Returns a list of all thread objects that are currently active.
+
+from threading import *
+threads =enumerate()
+for i in threads:
+    print(i)
+    
+Q3) Explain the following functions
+1)run
+2)start
+3)join
+4)isAlive)
+
+~run() -− The run() method is the entry point for a thread.
+
+import threading
+
+class CustomThread(threading.Thread):
+  def run(self):
+    print("This is my custom run!")
+
+custom_thread = CustomThread()
+custom_thread.start()
+
+~start()  -− The start() method starts a thread by calling the run method.
+
+~join([time])  -− The join() waits for threads to terminate.
+
+from threading import *
+
+def square(nlist):
+    print([i*i for i in nlist])
+
+def cube(nlist):
+    print([i*i*i for i in nlist])
+    
+nlist = [5 , 2 , 3]
+t1 = Thread(target=square , args = (nlist,))
+t2 = Thread(target=cube , args = (nlist,))
+t1.start()
+t2.start()
+
+~isAlive()  -− The isAlive() method checks whether a thread is still executing.
+
+import threading
+
+def countdown(count):
+  print(f'Thread alive? {thread.is_alive()}')
+  print("Counting down...")
+  while count > 0:
+    print(f'{count} left')
+    count -= 1
+  print("We made it!")
+
+thread = threading.Thread(target=countdown, args=(5,))
+
+thread.start()
+thread.join()
+
+print(f'Thread still alive? {thread.is_alive()}')
+print("End of program.")
+
+Q4. rite a python program to create two threads. Thread one must print the list of squares and thread
+two must print the list of cubes
+
+from threading import *
+
+def square(list1):
+    print([i*i for i in list1])
+
+def cube(list1):
+    print([i*i*i for i in list1])
+    
+list1 = [5 , 2 , 3]
+t1 = Thread(target=square , args = (list1,))
+t2 = Thread(target=cube , args = (list1,))
+t1.start()
+t2.start()
+
+Q5. State advantages and disadvantages of multithreading
+Following are some of the common advantages of multithreading:
+
+Enhanced performance by decreased development time
+*Simplified and streamlined program coding
+*Improvised GUI responsiveness
+*Simultaneous and parallelized occurrence of tasks
+*Better use of cache storage by utilization of resources
+*Decreased cost of maintenance
+*Better use of CPU resource
+
+Disadvantages of multithreading:
+*Complex debugging and testing processes
+*Overhead switching of context
+*Increased potential for deadlock occurrence
+*Increased difficulty level in writing a program
+*Unpredictable result
+
+Q6. Explain deadlocks and race conditions.
+#Race Condition:
+A race condition occurs when two threads "race" for access to a resource. For example, you
+may have an object that's used in two threads. If one thread tries to change a value in the objec while another tries to do the same thing, a race condition can occur. You can’t guarantee which thread will get to the object first, and thus your code could end up with some nasty bugs.
+
+To prevent this kind of thing from happening, C# has a special keyword called lock().
+Lock is used to "lock" an object so that only the thread that locked it can work with it.
+
+#deadlocks Condition:
+deadlockscan cause them to just hang and do nothing for no apparent reason.
+
+A deadlock occurs when two threads lock each other’s resources. For example, one thread
+could lock an employee object and then wait for access to a department object. A second
+thread could have locked the department object and be waiting for the now locked employee
+object. The net result is that both threads stop dead in the water.
+
+There is no magic keyword to prevent deadlocks from happening. You just need to be
+careful when writing your own code to make sure that you don’t end up with a situation where a deadlock can occur
